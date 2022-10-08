@@ -11,38 +11,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class BonusServiceTest {
 
     private final BonusService bonusService = new BonusService();
+    private final Funcionario funcionario = new Funcionario("Teste", LocalDate.now(), null);
 
     @Test
     void bonusShouldBeZeroIfEmployeeHasSalaryTooHigh() {
-        Funcionario f = new Funcionario("Teste", LocalDate.now(), new BigDecimal("11000"));
-        assertThrows(IllegalArgumentException.class, () -> bonusService.calcularBonus(f));
+        funcionario.setSalario(new BigDecimal("11000"));
+        assertThrows(IllegalArgumentException.class, () -> bonusService.calcularBonus(funcionario));
     }
 
     @Test
     void bonusShouldBeZeroIfEmployeeHasSalaryOfZero() {
-        Funcionario f = new Funcionario("Teste", LocalDate.now(), new BigDecimal("0"));
-        var bonus = bonusService.calcularBonus(f);
+        funcionario.setSalario(new BigDecimal("0"));
+        var bonus = bonusService.calcularBonus(funcionario);
         assertEquals(new BigDecimal("0.0"), bonus);
     }
 
     @Test
     void bonusShouldBeNegativeIfProvidedSalaryIsNegative() {
-        Funcionario f = new Funcionario("Teste", LocalDate.now(), new BigDecimal("-10000"));
-        var bonus = bonusService.calcularBonus(f);
+        funcionario.setSalario(new BigDecimal("-10000"));
+        var bonus = bonusService.calcularBonus(funcionario);
         assertEquals(new BigDecimal("-1000.0"), bonus);
     }
 
     @Test
     void bonusShouldBeOneThousandIfSalaryIsEqualToTenThousand() {
-        Funcionario f = new Funcionario("Teste", LocalDate.now(), new BigDecimal("10000"));
-        var bonus = bonusService.calcularBonus(f);
+        funcionario.setSalario(new BigDecimal("10000"));
+        var bonus = bonusService.calcularBonus(funcionario);
         assertEquals(new BigDecimal("1000.0"), bonus);
     }
 
     @Test
     void bonusShouldBeTenPercent() {
-        Funcionario f = new Funcionario("Teste", LocalDate.now(), new BigDecimal("2500"));
-        var bonus = bonusService.calcularBonus(f);
+        funcionario.setSalario(new BigDecimal("2500"));
+        var bonus = bonusService.calcularBonus(funcionario);
         assertEquals(new BigDecimal("250.0"), bonus);
     }
 
